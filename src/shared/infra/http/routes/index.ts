@@ -1,15 +1,17 @@
 import { Router } from 'express';
 
 import { authenticateRoutes } from './authenticate.routes';
+import { carsRoutes } from './cars.routes';
 import { categoriesRoutes } from './categories.routes';
 import { specificationsRoutes } from './specifications.routes';
 import { usersRoutes } from './users.routes';
 
-const routes = Router();
+const router = Router();
 
-routes.use('/categories', categoriesRoutes);
-routes.use('/specifications', specificationsRoutes);
-routes.use('/users', usersRoutes);
-routes.use('/sessions', authenticateRoutes);
+router.use('/categories', categoriesRoutes);
+router.use('/specifications', specificationsRoutes);
+router.use('/users', usersRoutes);
+router.use('/sessions', authenticateRoutes);
+router.use('/cars', carsRoutes);
 
-export { routes };
+export { router };
