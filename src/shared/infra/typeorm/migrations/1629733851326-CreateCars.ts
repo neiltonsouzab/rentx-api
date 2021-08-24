@@ -9,6 +9,7 @@ export class CreateCars1629733851326 implements MigrationInterface {
           {
             name: 'id',
             type: 'uuid',
+            isPrimary: true,
           },
           {
             name: 'name',
@@ -23,7 +24,7 @@ export class CreateCars1629733851326 implements MigrationInterface {
             type: 'numeric',
           },
           {
-            name: 'avaiable',
+            name: 'available',
             type: 'boolean',
             default: true,
           },

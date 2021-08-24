@@ -1,10 +1,18 @@
-import { ICreateCategoryDTO } from '@modules/cars/dtos/ICreateCategoryDTO';
 import { Category } from '@modules/cars/infra/typeorm/entities/Category';
 
+type CreateCategoryData = {
+  name: string;
+  description: string;
+};
+
+type FindCategoryByNameData = {
+  name: string;
+};
+
 interface ICategoriesRepository {
-  findByName(name: string): Promise<Category>;
+  create(data: CreateCategoryData): Promise<Category>;
+  findByName(data: FindCategoryByNameData): Promise<Category>;
   list(): Promise<Category[]>;
-  create(data: ICreateCategoryDTO): Promise<Category>;
 }
 
-export { ICategoriesRepository };
+export { ICategoriesRepository, CreateCategoryData, FindCategoryByNameData };

@@ -2,7 +2,9 @@ import { getRepository, Repository } from 'typeorm';
 
 import { Specification } from '@modules/cars/infra/typeorm/entities/Specification';
 import {
-  ICreateSpecificationDTO,
+  CreateSpecificationData,
+  FindSpecificationByNameData,
+  FindSpecificationsByIdData,
   ISpecificationsRepository,
 } from '@modules/cars/repositories/ISpecificationsRepository';
 
@@ -16,7 +18,7 @@ class SpecificationsRepository implements ISpecificationsRepository {
   async create({
     name,
     description,
-  }: ICreateSpecificationDTO): Promise<Specification> {
+  }: CreateSpecificationData): Promise<Specification> {
     const specification = this.repository.create({
       name,
       description,
@@ -27,7 +29,9 @@ class SpecificationsRepository implements ISpecificationsRepository {
     return specification;
   }
 
-  async findByName(name: string): Promise<Specification> {
+  async findByName({
+    name,
+  }: FindSpecificationByNameData): Promise<Specification> {
     const specification = await this.repository.findOne({
       where: {
         name,
@@ -35,6 +39,12 @@ class SpecificationsRepository implements ISpecificationsRepository {
     });
 
     return specification;
+  }
+
+  async findByIds({
+    ids,
+  }: FindSpecificationsByIdData): Promise<Specification[]> {
+    return this.repository.findByIds(ids);
   }
 }
 

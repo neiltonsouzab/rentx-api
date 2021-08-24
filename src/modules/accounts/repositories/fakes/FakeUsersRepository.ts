@@ -1,6 +1,10 @@
-import { ICreateUserDTO } from '@modules/accounts/dtos/ICreateUserDTO';
 import { User } from '@modules/accounts/infra/typeorm/entities/User';
-import { IUsersRepository } from '@modules/accounts/repositories/IUsersRepository';
+import {
+  CreateUserData,
+  FindUserByEmailData,
+  FindUserByIdData,
+  IUsersRepository,
+} from '@modules/accounts/repositories/IUsersRepository';
 
 class FakeUsersRepository implements IUsersRepository {
   users: User[] = [];
@@ -10,7 +14,7 @@ class FakeUsersRepository implements IUsersRepository {
     email,
     driver_license,
     password,
-  }: ICreateUserDTO): Promise<User> {
+  }: CreateUserData): Promise<User> {
     const user = new User();
 
     Object.assign(user, { name, email, driver_license, password });
@@ -28,13 +32,13 @@ class FakeUsersRepository implements IUsersRepository {
     return user;
   }
 
-  async findByEmail(email: string): Promise<User> {
+  async findByEmail({ email }: FindUserByEmailData): Promise<User> {
     const user = this.users.find(findUser => findUser.email === email);
 
     return user;
   }
 
-  async findById(id: string): Promise<User> {
+  async findById({ id }: FindUserByIdData): Promise<User> {
     const user = this.users.find(findUser => findUser.id === id);
 
     return user;

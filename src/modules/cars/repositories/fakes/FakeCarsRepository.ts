@@ -1,7 +1,12 @@
-import { ICreateCarDTO } from '@modules/cars/dtos/ICreateCarDTO';
 import { Car } from '@modules/cars/infra/typeorm/entities/Car';
 
-import { ICarsRepository } from '../ICarsRepository';
+import {
+  CreateCarData,
+  FindCarByAvaiableData,
+  FindCarByIdData,
+  FindCarByLincensePlateData,
+  ICarsRepository,
+} from '../ICarsRepository';
 
 class FakeCarsRepository implements ICarsRepository {
   cars: Car[] = [];
@@ -14,7 +19,7 @@ class FakeCarsRepository implements ICarsRepository {
     daily_rate,
     fine_amount,
     category_id,
-  }: ICreateCarDTO): Promise<Car> {
+  }: CreateCarData): Promise<Car> {
     const car = new Car();
 
     Object.assign(car, {
@@ -32,8 +37,37 @@ class FakeCarsRepository implements ICarsRepository {
     return car;
   }
 
-  async findByLicensePlate(license_plate: string): Promise<Car> {
+  async save(car: Car): Promise<Car> {
+    const index = this.cars.findIndex(findCar => findCar.id === car.id);
+    this.cars[index] = car;
+
+    return car;
+  }
+
+  async findByLicensePlate({
+    license_plate,
+  }: FindCarByLincensePlateData): Promise<Car> {
     return this.cars.find(findCar => findCar.license_plate === license_plate);
+  }
+
+  async findByAvailable({
+    name,
+    brand,
+    category_id,
+  }: FindCarByAvaiableData): Promise<Car[]> {
+    return this.cars
+      .filter(filterCar => filterCar.available)
+      .filter(filterCar => (name ? filterCar.name.includes(name) : filterCar))
+      .filter(filterCar =>
+        brand ? filterCar.brand.includes(brand) : filterCar,
+      )
+      .filter(filterCar =>
+        category_id ? filterCar.category_id === category_id : filterCar,
+      );
+  }
+
+  async findById({ id }: FindCarByIdData): Promise<Car> {
+    return this.cars.find(findCar => findCar.id === id);
   }
 }
 
