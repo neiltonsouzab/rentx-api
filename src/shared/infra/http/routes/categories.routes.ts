@@ -29,7 +29,7 @@ categoriesRoutes.get('/', listCategoriesController.handle);
 
 categoriesRoutes.post(
   '/import',
-  upload.single('file'),
+  upload.single('images'),
   ensureAuthenticated,
   ensureAdmin,
   importCategoriesController.handle,
