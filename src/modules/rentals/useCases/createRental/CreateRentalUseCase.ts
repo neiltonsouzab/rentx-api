@@ -1,6 +1,7 @@
 import { addHours, setSeconds, isBefore, parseISO } from 'date-fns';
 import { inject, injectable } from 'tsyringe';
 
+import { ICarsRepository } from '@modules/cars/repositories/ICarsRepository';
 import { Rental } from '@modules/rentals/infra/typeorm/entities/Rental';
 import { IRentalsRepository } from '@modules/rentals/repositories/IRentalsRepository';
 import { AppError } from '@shared/errors/AppError';
@@ -14,6 +15,8 @@ interface IRequest {
 @injectable()
 class CreateRentalUseCase {
   constructor(
+    @inject('CarsRepository')
+    private carsRepository: ICarsRepository,
     @inject('RentalsRepository')
     private rentalsRepository: IRentalsRepository,
   ) {}
@@ -46,7 +49,9 @@ class CreateRentalUseCase {
       throw new AppError('Invalid return time.');
     }
 
-    console.log(expected_return_date);
+    const car = await this.carsRepository.findById({ id: car_id });
+    car.available = false;
+    await this.carsRepository.save(car);
 
     const rental = await this.rentalsRepository.create({
       car_id,

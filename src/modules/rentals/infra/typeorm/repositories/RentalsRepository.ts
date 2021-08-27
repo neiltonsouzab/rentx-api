@@ -2,6 +2,7 @@ import { getRepository, Repository, IsNull } from 'typeorm';
 
 import {
   CreateRentalData,
+  FindByIdData,
   FindOpenRentalByCarData,
   FindOpenRentalByUserData,
   IRentalsRepository,
@@ -15,6 +16,7 @@ class RentalsRepository implements IRentalsRepository {
   constructor() {
     this.repository = getRepository(Rental);
   }
+
   create({
     car_id,
     user_id,
@@ -28,6 +30,11 @@ class RentalsRepository implements IRentalsRepository {
 
     return this.repository.save(rental);
   }
+
+  async save(rental: Rental): Promise<Rental> {
+    return this.repository.save(rental);
+  }
+
   findOpenRentalByCar({ car_id }: FindOpenRentalByCarData): Promise<Rental> {
     return this.repository.findOne({
       car_id,
@@ -39,6 +46,10 @@ class RentalsRepository implements IRentalsRepository {
       user_id,
       end_date: IsNull(),
     });
+  }
+
+  async findById({ id }: FindByIdData): Promise<Rental> {
+    return this.repository.findOne(id);
   }
 }
 

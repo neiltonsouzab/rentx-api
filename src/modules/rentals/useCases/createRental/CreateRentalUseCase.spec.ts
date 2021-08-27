@@ -1,17 +1,23 @@
 import { addHours } from 'date-fns';
 
+import { FakeCarsRepository } from '@modules/cars/repositories/fakes/FakeCarsRepository';
 import { FakeRentalsRepository } from '@modules/rentals/repositories/fakes/FakeRentalsRepository';
 import { AppError } from '@shared/errors/AppError';
 
 import { CreateRentalUseCase } from './CreateRentalUseCase';
 
+let fakeCarsRepository: FakeCarsRepository;
 let fakeRentalsRepository: FakeRentalsRepository;
 let createRentalUseCase: CreateRentalUseCase;
 
 describe('CreateRental', () => {
   beforeEach(() => {
+    fakeCarsRepository = new FakeCarsRepository();
     fakeRentalsRepository = new FakeRentalsRepository();
-    createRentalUseCase = new CreateRentalUseCase(fakeRentalsRepository);
+    createRentalUseCase = new CreateRentalUseCase(
+      fakeCarsRepository,
+      fakeRentalsRepository,
+    );
   });
 
   it('should be able to create a new rental the car', async () => {

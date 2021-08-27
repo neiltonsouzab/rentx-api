@@ -2,6 +2,7 @@ import { Rental } from '@modules/rentals/infra/typeorm/entities/Rental';
 
 import {
   CreateRentalData,
+  FindByIdData,
   FindOpenRentalByCarData,
   FindOpenRentalByUserData,
   IRentalsRepository,
@@ -28,6 +29,20 @@ class FakeRentalsRepository implements IRentalsRepository {
     this.rentals.push(rental);
 
     return rental;
+  }
+
+  async save(rental: Rental): Promise<Rental> {
+    const index = this.rentals.findIndex(
+      findRental => findRental.id === rental.id,
+    );
+
+    this.rentals[index] = rental;
+
+    return rental;
+  }
+
+  async findById({ id }: FindByIdData): Promise<Rental> {
+    return this.rentals.find(findRental => findRental.id === id);
   }
 
   async findOpenRentalByCar({

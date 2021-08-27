@@ -14,10 +14,16 @@ type FindOpenRentalByUserData = {
   user_id: string;
 };
 
+type FindByIdData = {
+  id: string;
+};
+
 interface IRentalsRepository {
   create(data: CreateRentalData): Promise<Rental>;
+  save(rental: Rental): Promise<Rental>;
   findOpenRentalByCar(data: FindOpenRentalByCarData): Promise<Rental>;
   findOpenRentalByUser(data: FindOpenRentalByUserData): Promise<Rental>;
+  findById(data: FindByIdData): Promise<Rental>;
 }
 
 export {
@@ -25,4 +31,5 @@ export {
   CreateRentalData,
   FindOpenRentalByCarData,
   FindOpenRentalByUserData,
+  FindByIdData,
 };
