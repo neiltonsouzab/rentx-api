@@ -21,8 +21,18 @@ describe('CreateRental', () => {
   });
 
   it('should be able to create a new rental the car', async () => {
+    const car = await fakeCarsRepository.create({
+      name: 'CarName',
+      description: 'CarDescription',
+      brand: 'CarBrand',
+      license_plate: '1234-5678',
+      daily_rate: 100,
+      fine_amount: 30,
+      category_id: 'category-id',
+    });
+
     const rental = await createRentalUseCase.execute({
-      car_id: 'CarId',
+      car_id: car.id,
       user_id: 'UserId',
       expected_return_date: addHours(new Date(), 24),
     });
@@ -31,15 +41,25 @@ describe('CreateRental', () => {
   });
 
   it('should not be able to create a new rental if there is another open to the same car', async () => {
+    const car = await fakeCarsRepository.create({
+      name: 'CarName',
+      description: 'CarDescription',
+      brand: 'CarBrand',
+      license_plate: '1234-5678',
+      daily_rate: 100,
+      fine_amount: 30,
+      category_id: 'category-id',
+    });
+
     await createRentalUseCase.execute({
-      car_id: 'CarId1',
+      car_id: car.id,
       user_id: 'UserId1',
       expected_return_date: addHours(new Date(), 24),
     });
 
     await expect(
       createRentalUseCase.execute({
-        car_id: 'CarId1',
+        car_id: car.id,
         user_id: 'UserId2',
         expected_return_date: addHours(new Date(), 24),
       }),
@@ -47,15 +67,35 @@ describe('CreateRental', () => {
   });
 
   it('should not be able to create a new rental if there is another open to the same user', async () => {
+    const car1 = await fakeCarsRepository.create({
+      name: 'CarName1',
+      description: 'CarDescription1',
+      brand: 'CarBrand1',
+      license_plate: '1234-5678',
+      daily_rate: 100,
+      fine_amount: 30,
+      category_id: 'category-id',
+    });
+
+    const car2 = await fakeCarsRepository.create({
+      name: 'CarName2',
+      description: 'CarDescription2',
+      brand: 'CarBrand2',
+      license_plate: '2234-5678',
+      daily_rate: 100,
+      fine_amount: 30,
+      category_id: 'category-id',
+    });
+
     await createRentalUseCase.execute({
-      car_id: 'CarId1',
+      car_id: car1.id,
       user_id: 'UserId1',
       expected_return_date: addHours(new Date(), 24),
     });
 
     await expect(
       createRentalUseCase.execute({
-        car_id: 'CarId2',
+        car_id: car2.id,
         user_id: 'UserId1',
         expected_return_date: addHours(new Date(), 24),
       }),

@@ -18,8 +18,8 @@ describe('CreateCategoryController', () => {
 
     await connection.query(
       `INSERT INTO users (id, name, email, password, is_admin, driver_license, created_at)
-        VALUES ('${id}', 'admin', 'admin@rentx.com.br', '${password}', true, 'XX12345', 'now()')
-      `,
+          VALUES ('${id}', 'admin', 'admin@rentx.com.br', '${password}', true, 'XX12345', 'now()')
+        `,
     );
   });
 

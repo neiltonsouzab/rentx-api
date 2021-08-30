@@ -45,7 +45,7 @@ class CreateRentalUseCase {
 
     const minimumReturnDate = setSeconds(addHours(new Date(), 24), 0);
 
-    if (isBefore(parseISO(String(expected_return_date)), minimumReturnDate)) {
+    if (isBefore(expected_return_date, minimumReturnDate)) {
       throw new AppError('Invalid return time.');
     }
 
