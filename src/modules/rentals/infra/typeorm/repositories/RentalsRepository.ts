@@ -3,6 +3,7 @@ import { getRepository, Repository, IsNull } from 'typeorm';
 import {
   CreateRentalData,
   FindByIdData,
+  FindByUserData,
   FindOpenRentalByCarData,
   FindOpenRentalByUserData,
   IRentalsRepository,
@@ -50,6 +51,13 @@ class RentalsRepository implements IRentalsRepository {
 
   async findById({ id }: FindByIdData): Promise<Rental> {
     return this.repository.findOne(id);
+  }
+
+  async findByUser({ user_id }: FindByUserData): Promise<Rental[]> {
+    return this.repository.find({
+      where: { user_id },
+      relations: ['car'],
+    });
   }
 }
 

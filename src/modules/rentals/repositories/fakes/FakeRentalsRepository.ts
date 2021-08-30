@@ -3,6 +3,7 @@ import { Rental } from '@modules/rentals/infra/typeorm/entities/Rental';
 import {
   CreateRentalData,
   FindByIdData,
+  FindByUserData,
   FindOpenRentalByCarData,
   FindOpenRentalByUserData,
   IRentalsRepository,
@@ -58,6 +59,12 @@ class FakeRentalsRepository implements IRentalsRepository {
   }: FindOpenRentalByUserData): Promise<Rental> {
     return this.rentals.find(
       rental => rental.user_id === user_id && !rental.end_date,
+    );
+  }
+
+  async findByUser({ user_id }: FindByUserData): Promise<Rental[]> {
+    return this.rentals.filter(
+      filterRental => filterRental.user_id === user_id,
     );
   }
 }

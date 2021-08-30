@@ -18,12 +18,17 @@ type FindByIdData = {
   id: string;
 };
 
+type FindByUserData = {
+  user_id: string;
+};
+
 interface IRentalsRepository {
   create(data: CreateRentalData): Promise<Rental>;
   save(rental: Rental): Promise<Rental>;
   findOpenRentalByCar(data: FindOpenRentalByCarData): Promise<Rental>;
   findOpenRentalByUser(data: FindOpenRentalByUserData): Promise<Rental>;
   findById(data: FindByIdData): Promise<Rental>;
+  findByUser(data: FindByUserData): Promise<Rental[]>;
 }
 
 export {
@@ -32,4 +37,5 @@ export {
   FindOpenRentalByCarData,
   FindOpenRentalByUserData,
   FindByIdData,
+  FindByUserData,
 };
