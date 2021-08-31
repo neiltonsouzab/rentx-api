@@ -2,6 +2,7 @@ import { getRepository, Repository } from 'typeorm';
 
 import {
   CreateUserTokenData,
+  FindByRefreshTokenData,
   FindByUserIdAndRefreshTokenData,
   IUsersTokensRepository,
 } from '@modules/accounts/repositories/IUsersTokensRepositor';
@@ -38,6 +39,12 @@ class UsersTokensRepositoty implements IUsersTokensRepository {
     refresh_token,
   }: FindByUserIdAndRefreshTokenData): Promise<UserToken> {
     return this.repository.findOne({ user_id, refresh_token });
+  }
+
+  async findByRefreshToken({
+    refresh_token,
+  }: FindByRefreshTokenData): Promise<UserToken> {
+    return this.repository.findOne({ refresh_token });
   }
 }
 
