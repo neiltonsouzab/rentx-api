@@ -1,17 +1,23 @@
 import { FakeUsersRepository } from '@modules/accounts/repositories/fakes/FakeUsersRepository';
+import { FakeUsersTokensRepository } from '@modules/accounts/repositories/fakes/FakeUsersTokensRepository';
 import { AuthenticateUserUseCase } from '@modules/accounts/useCases/authenticateUser/AuthenticateUserUseCase';
 import { CreateUserUseCase } from '@modules/accounts/useCases/createUser/CreateUserUseCase';
 import { AppError } from '@shared/errors/AppError';
 
 let fakeUsersRepository: FakeUsersRepository;
+let fakeUsersTokensRepository: FakeUsersTokensRepository;
 let createUserUseCase: CreateUserUseCase;
 let authenticateUserUseCase: AuthenticateUserUseCase;
 
 describe('AuthenticateUser', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
+    fakeUsersTokensRepository = new FakeUsersTokensRepository();
     createUserUseCase = new CreateUserUseCase(fakeUsersRepository);
-    authenticateUserUseCase = new AuthenticateUserUseCase(fakeUsersRepository);
+    authenticateUserUseCase = new AuthenticateUserUseCase(
+      fakeUsersRepository,
+      fakeUsersTokensRepository,
+    );
   });
 
   it('should be able to authenticate an user', async () => {
