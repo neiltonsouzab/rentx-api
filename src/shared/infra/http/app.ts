@@ -8,6 +8,7 @@ import swagger from 'swagger-ui-express';
 import '@shared/container';
 import uploadConfig from '@config/upload';
 import { AppError } from '@shared/errors/AppError';
+import rateLimiter from '@shared/infra/http/middlewares/rateLimiter';
 import { router } from '@shared/infra/http/routes';
 import createConnection from '@shared/infra/typeorm';
 
@@ -17,6 +18,7 @@ createConnection();
 
 const app = express();
 
+app.use(rateLimiter);
 app.use(express.json());
 app.use('/docs', swagger.serve, swagger.setup(swaggerFile));
 app.use('/avatars', express.static(`${uploadConfig.tmpFolder}/avatars`));
